@@ -1,7 +1,7 @@
 # SML User Documentation
 User documentation for methods in the Statistical Methods Library.
 
-### SML-small methods
+### Sml-small methods
 - [Date Adjustment]()
 - [Selective Editing]()
 - [Thousand Pound Correction]()
