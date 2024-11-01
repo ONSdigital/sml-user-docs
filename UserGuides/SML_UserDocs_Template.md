@@ -1,8 +1,8 @@
 [comment]: # (File naming convention: SML_UserDocs_<MethodName>_<Lang>.md )
-[comment]: # (Lang abbreviates to: Py / PySpk / R )
+[comment]: # (If more than 1 language, Lang abbreviates to: Py / PySpk / R )
 
 
-# (Method Name) in (Python/R/PySpark) 
+# SML User Guide - (Method Name) in (Python/R/PySpark) 
 
 # Method Description
 
