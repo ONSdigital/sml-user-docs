@@ -235,7 +235,7 @@ available and therefore, question_1_pm is True.
 
 ### Example (Synthetic) Data
 
-Files containing the example input and output data given above can be found in the GitHub repo https://github.com/ONSdigital/sml_user_docs/tree/main/UserGuides/SelectiveEditing/ExampleData
+Files containing the example input and output data given above can be found in the [ExampleData](ExampleData) folder where you are reading this guide.
 
 Input data:
 
