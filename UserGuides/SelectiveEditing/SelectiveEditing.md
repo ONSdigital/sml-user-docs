@@ -1,8 +1,4 @@
-[comment]: # (File naming convention: SML_UserDocs_<MethodName>_<Lang>.md )
-[comment]: # (If more than 1 lang, Lang abbreviates to: Py / PySpk / R )
-
-
-# Selective Editing in Python
+# SML User Guide - Selective Editing in Python
 
 # Method Description
 
