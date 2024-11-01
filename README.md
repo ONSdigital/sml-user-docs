@@ -6,12 +6,12 @@ Welcome to the Statistical Methods Library user documentation repository.
 Here you will find user guides outlining the methodology behind each of our methods as well as instructions on how to install and use them.
 
 ### Sml-small methods
-- [Date Adjustment]()
+- [Date Adjustment](UserGuides/DateAdjustment/DateAdjustment.md)
 - [Selective Editing]()
 - [Thousand Pound Correction]()
 - [Totals and Components]()
 
 ### Cell Key Perturbation
-- [CellKeyPerturbation in Python](CellKeyPerturbation/CellKeyPerturbation_Py.md)
-- [CellKeyPerturbation in R]()
+- [CellKeyPerturbation in Python](UserGuides/CellKeyPerturbation/CellKeyPerturbation_Py.md)
+- CellKeyPerturbation in R (to be released shortly)
 
