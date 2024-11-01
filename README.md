@@ -9,7 +9,7 @@ Here you will find user guides outlining the methodology behind each of our meth
 - [Date Adjustment](UserGuides/DateAdjustment/DateAdjustment.md)
 - [Selective Editing]()
 - [Thousand Pound Correction]()
-- [Totals and Components]()
+- [Totals and Components](UserGuides/TotalsAndComponents/TotalsAndComponents.md)
 
 ### Cell Key Perturbation
 - [CellKeyPerturbation in Python](UserGuides/CellKeyPerturbation/CellKeyPerturbation_Py.md)
