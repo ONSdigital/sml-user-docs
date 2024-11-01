@@ -1,8 +1,4 @@
-[comment]: # (File naming convention: <MethodName>_<Lang>.md )
-[comment]: # (If more than 1 lang, Lang abbreviates to: Py / PySpk / R )
-
-
-# Date Adjustment in Python
+# SML User Guide - Date Adjustment in Python
 
 # Method Description
 
