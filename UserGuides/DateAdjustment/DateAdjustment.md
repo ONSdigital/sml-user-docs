@@ -251,7 +251,7 @@ New columns are produced from running the method and are described below:
 
 ### Example (Synthetic) Data
 
-Files containing the example input & output data given above can be found in the github repo https://github.com/ONSdigital/sml_user_docs/tree/main/UserGuides/DateAdjustment/ExampleData
+Files containing the example input & output data given above can be found in the [ExampleData](ExampleData) folder where you are reading this guide.
 
 Input & Trading day data:
 
