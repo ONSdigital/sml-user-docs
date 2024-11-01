@@ -1,4 +1,4 @@
-comment]: # (File naming convention: <MethodName>_<Lang>.md )
+[comment]: # (File naming convention: <MethodName>_<Lang>.md )
 [comment]: # (If more than 1 lang, Lang abbreviates to: Py / PySpk / R )
 
 
