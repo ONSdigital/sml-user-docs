@@ -7,7 +7,7 @@ Here you will find user guides outlining the methodology behind each of our meth
 
 ### Sml-small methods
 - [Date Adjustment](UserGuides/DateAdjustment/DateAdjustment.md)
-- [Selective Editing]()
+- [Selective Editing](UserGuides/SelectiveEditing/SelectiveEditing.md)
 - [Thousand Pound Correction]()
 - [Totals and Components](UserGuides/TotalsAndComponents/TotalsAndComponents.md)
 
