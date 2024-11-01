@@ -1,8 +1,4 @@
-[comment]: # (File naming convention: <MethodName>_<Lang>.md )
-[comment]: # (if more than 1 lang, Lang abbreviates to: Py / PySpk / R )
-
-
-# Totals and Components in Python 
+# SML User Guide - Totals and Components in Python 
 
 # Method Description
 
