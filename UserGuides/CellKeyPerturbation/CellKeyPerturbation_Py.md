@@ -266,20 +266,16 @@ contingency table is published.
 
 The following are included in the method package: 
 
-- **generate_test_data** : function to create an example data set,
-  a randomly generated data set with record keys in the range 0-255
+- **generate_test_data** : function to create an example data set, a randomly generated data set with record keys in the range 0-255.
 
 ```py
 from cell_key_perturbation.generate_test_data import generate_test_data
 micro = generate_test_data()
 ```
 
-- **ptable_10_5_rule.csv** : file containing example ptable, ptable_10_5, which 
-  applies the 10_5 rule and has record keys in the range 0-255.
+- **ptable_10_5_rule.csv** : file containing example ptable, ptable_10_5, which applies the 10_5 rule and has record keys in the range 0-255.
   
-  This will be located in your installation directory and should be read in as 
-  a pandas dataframe specifying the filepath to the location for your 
-  installation:
+This will be located in your installation directory or can be found in the [ExamplePtable](ExamplePtable) folder where you are reading this guide. It should be read in as a pandas dataframe specifying the filepath:
   
 ```py
 #import pandas as pd
