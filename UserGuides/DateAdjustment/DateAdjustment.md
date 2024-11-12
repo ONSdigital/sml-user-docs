@@ -19,7 +19,7 @@ To generate summary and headline statistics for a reporting period it is importa
 Full details of the methodology and statistical process flow are given in the [Methodology](#methodology) section.
 
 
-## User Guidance
+# User Guidance
 
 ### Finding and Installing the method 
 
@@ -238,7 +238,7 @@ output.to_csv("date_adjustment_output_data_example_1.csv")
 The output can be exported as a csv file and will give you the adjusted responses along with the sum of the weights.
 
 
-## Methodology
+# Methodology
 
 ### Terminology
 
@@ -309,7 +309,7 @@ The average weekly function allows the responses to be given on a weekly value r
 
 
 
-## Additional Information
+# Additional Information
 
 The ONS Statistical Methods Library at https://statisticalmethodslibrary.ons.gov.uk/ 
 contains:
