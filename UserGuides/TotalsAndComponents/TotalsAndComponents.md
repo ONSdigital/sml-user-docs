@@ -1,8 +1,5 @@
 # SML User Guide - Totals and Components in Python 
 
-# Method Description
-
-
 ### Overview
 
  | Descriptive      | Details                                                  |
@@ -12,7 +9,7 @@
  | Status           | Ready to Use                                             |
  | Inputs           | identifier, total, components, amend_total, predictive, precision, auxiliary, absolute_difference_threshold, percentage_difference_threshold |
  | Outputs          | object containing results |
- | Method Version   | v1.2.1                                                   |
+ | Method Version   | v1.2.3                                                   |
 
 ### Summary
 
@@ -23,6 +20,206 @@ The primary use of the method is to automatically detect and correct errors in r
 This method can also be used to ensure fixed relationships between variables are satisfied in other data types such as imputed data to improve overall data quality.
 
 This method can only be applied if all the components are of the same type e.g., all returned or imputed. Maintaining a total and components relationship where components are a combination of types (e.g., returned and imputed) is outside of the scope for this method.
+
+Full details of the methodology and statistical process flow are given in the [Methodology](#methodology) section.
+
+# User Notes
+
+### Finding and Installing the method 
+
+**This method requires Python >=3.7.1, <4.0.0 and uses the Pandas package v1.5.3.**
+
+If you are using Pandas >=2.0 this will be uninstalled and v1.5.3 installed.
+
+><sub>To prevent downgrading software on your system, we recommend creating a virtual environment to install and run SML methods. This will enable you to install the method with the required version of Python, etc, without disrupting the newer versions you may be running on your system. If you’re new to virtual environments, please see our guidence on installing a method in the Help centre of our SML website to get started. Otherwise, use your preferred method to create a virtual environment with the correct software versions.</sub>
+
+
+The method package can be installed from Artifactory/PyPI using the following code in the terminal or command prompt:
+
+```py
+pip install sml_small 
+```
+
+In your code you can import the method using:
+
+```py
+from sml_small.editing import totals_and_components
+```
+
+### Requirements and Dependencies 
+
+- This method requires input data. 
+
+### Assumptions and Validity 
+
+- Target value and predictive value are well correlated
+- Target value and auxiliary value, if required, are well correlated
+- Thresholds set are a good indication of whether a value should be corrected
+- The method can only observe and satisfy one fixed relationship at a time (i.e., only one set of components and total)
+- Both the total value and at least one corresponding component are populated for the target period
+- The components are all the same data type e.g., all returned or imputed. The total variable type does not impact this.
+
+
+## How to Use the Method
+
+
+### Method Input
+
+Input records must include the following fields of the correct types:
+
+- Unique Identifier – Any e.g. Business Reporting Unit
+- Total Variable – Target period total, numeric
+- Components Variable – Corresponding list of Total variable's components, numeric – nulls allowed
+- Amend Total – Select whether Total Variable for the target period should be automatically corrected, Boolean
+- Predictive Variable – Previous or current period total, numeric
+- Precision - The precision value determines the level of accuracy for our floating point calculations – Numeric – nulls allowed
+- Auxiliary Variable – optional, numeric – nulls allowed
+- Absolute Difference Threshold - represented as a decimal
+- Percentage Difference Threshold - represented as a decimal
+
+Note: 
+
+- Although Predictive Variable and Auxiliary Variable are both optional, one 
+of these will need to be provided for the method to run without stopping early.
+- In the same way, one of Absolute Difference Threshold and Percentage Difference 
+Threshold need to be provided.
+- Populating the parameters with zeros is not equivalent to leaving them blank.
+
+**Example**
+
+| identifier | total | comp_1 | comp_2 | comp_3 | comp_4 | amend_total | predictive | precision | auxiliary | absolute_difference_threshold | percentage_difference_threshold | 
+| --- | --- | ---  | --- | --- | --- | ---   | ---   | --- |--- | --- | --- | 
+| 1 | 1689  |  632 | 732 | 101 | 165 | False | 1689  |  10 |    |  28 | 0.1 |
+| 2 |    0  |    7 |   0 |   2 |   2 | True  |    0  |  28 |    |  11 |     |
+| 3 |   11  |    0 |   0 |   0 |   0 | False |   11  |  28 |    |  11 |     |
+| 4 | 10811 | 9201 | 866 | 632 | 112 | True  | 10811 |  28 |    |     | 0.1 |
+| 5 | 12492 | 9201 | 866 | 632 | 112 | True  | 12492 |  28 |    |     | 0.1 |
+
+### Method Output 
+
+Output records shall always contain the following fields with the following types:
+
+* Unique Identifier – Any e.g., Business Reporting Unit
+* Absolute Difference – Numeric, nulls allowed
+* Low Percent – Numeric, nulls allowed
+* High Percent – Numeric, nulls allowed
+* Final Total Variable – Numeric
+* Final Components Variable – Numeric
+* TCC Marker – To indicate the result of the Totals Components Correction method, string
+
+The TCC marker returned show if and what the method has corrected:
+
+* T = Total corrected
+* C = Components corrected
+* N = No correction required, i.e., the total is equal to the components sum
+* M = Manual editing required. This marker will identify contributors where the discrepancy between the total and component is deemed too large for automatic correction.
+* S = Method stops. This may be due to insufficient data to run the method, or one of the relevant zero cases has occurred.
+
+
+**Example**
+
+| identifier | absolute_difference | lower_percentage_threshold | upper_percentage_threshold | final_total | final_components | tcc_marker |
+| --- | --- | --- | ---     | ---   | ---                                                          | --- |
+| 1 | 59 | 1467   |  1793   | 1689  | ['654.8760735' ,'758.4957055', '104.6558282', '170.9723927'] |   C | 
+| 2 | 11 |        |         | 11    | ['7', '0', '2', '2']                                         |   T | 
+| 3 |    |        |         | 11    | ['0', '0', '0', '0']                                         |   S | 
+| 4 |    | 9729.9 | 11892.1 | 10811 | ['9201', '866', '632', '112']                                |   N | 
+| 5 |    | 9729.9 | 11892.1 | 12492 | ['9201', '866', '632', '112']                                |   M | 
+
+### Example (Synthetic) Data
+
+Files containing the example input & output data given above can be found in the [ExampleData](ExampleData) folder where you are reading this guide.
+
+Input data:
+
+```  totals_and_components_input_data_example.csv  ```
+
+Expected output after running the worked example:
+
+```  totals_and_components_output_data_example.csv  ```
+
+## Worked Example
+
+The method can be used in two ways:
+1. a single record can be specified as the input parameters to the method
+2. mutiple records can be supplied as a pandas dataframe to a wrapper function
+
+
+The following code can be used to run totals & components on a single record. 
+This example uses the first record in the example dataset.
+
+```py
+from sml_small.editing import totals_and_components
+
+result = totals_and_components(
+    identifier="1",
+    total=1689,
+    components=
+    [
+        (632),
+        (732),
+        (101),
+        (165)
+    ],
+    amend_total=False,
+    predictive=1689,
+    precision=10,
+    auxiliary=None,
+    absolute_difference_threshold=28,
+    percentage_difference_threshold=0.1
+)
+
+# The output will be returned as an object.
+# You will need to destructure the object to extract the values and
+# one way of doing this is using the built-in function vars().
+# vars() is used to return the __dict__attribute for the specified
+# module, class, instance or any other object with a
+# __dict__attribute
+
+print(vars(result))
+```
+
+Alternatively, a wrapper function is supplied with the method to run 
+totals & components for all records in a pandas dataframe.
+
+```py
+import pandas as pd
+from sml_small.utils.pandas_wrapper import wrapper
+
+datafile = "totals_and_components_input_data_example.csv"
+df = pd.read_csv(datafile)
+
+# Specify all columns to be appended to output dataframe
+totals_and_components_output_columns = [
+    "abs_diff",
+    "perc_low",
+    "perc_high",
+    "final_total",
+    "final_components",
+    "tcc_marker"    
+    ]
+
+totals_and_components_output = wrapper(
+    input_frame = df,
+    method = "totals_and_components",
+    output_columns = totals_and_components_output_columns,
+    unique_identifier_column = "identifier",
+    total_column = "total",
+    components_list_columns = ["comp_1","comp_2","comp_3","comp_4"], 
+    amend_total_column = "amend_total",
+    predictive_column = "predictive",
+    precision = "precision",
+    auxiliary_column = "auxiliary",
+    absolute_threshold_column = "absolute_difference_threshold",
+    percentage_threshold_column = "percentage_difference_threshold"
+    )
+
+# Save the output dataframe to a csv file
+totals_and_components_output.to_csv(
+    "totals_and_components_output_data_example.csv",index=False)
+```
+
+# Methodology
 
 ### Terminology
 
@@ -239,7 +436,6 @@ If the difference between the predictive total and the sum of the components
  is greater than the thresholds, then the data is not automatically corrected, 
  and the data is flagged for manual checking.
  
- 
  **Core mathematical Corrections**
  
  In summary, total correction is:
@@ -251,203 +447,7 @@ and component correction is:
 ```  final_component = (original_component / sum_of_components) * total  ```
 
 
-# User Notes
-
-### Finding and Installing the method 
-
-**This method requires Python >=3.7.1, <4.0.0 and uses the Pandas package v1.5.3.**
-
-If you are using Pandas >=2.0 this will be uninstalled and v1.5.3 installed.
-
-><sub>To prevent downgrading software on your system, we recommend creating a virtual environment to install and run SML methods. This will enable you to install the method with the required version of Python, etc, without disrupting the newer versions you may be running on your system. If you’re new to virtual environments, please see our guidence on installing a method in the Help centre of our SML website to get started. Otherwise, use your preferred method to create a virtual environment with the correct software versions.</sub>
-
-
-The method package can be installed from Artifactory/PyPI using the following code in the terminal or command prompt:
-
-```py
-pip install sml_small 
-```
-
-In your code you can import the method using:
-
-```py
-from sml_small.editing import totals_and_components
-```
-
-### Requirements and Dependencies 
-
-- This method requires input data. 
-
-### Assumptions and Validity 
-
-- Target value and predictive value are well correlated
-- Target value and auxiliary value, if required, are well correlated
-- Thresholds set are a good indication of whether a value should be corrected
-- The method can only observe and satisfy one fixed relationship at a time (i.e., only one set of components and total)
-- Both the total value and at least one corresponding component are populated for the target period
-- The components are all the same data type e.g., all returned or imputed. The total variable type does not impact this.
-
-
-## How to Use the Method
-
-
-### Method Input
-
-Input records must include the following fields of the correct types:
-
-- Unique Identifier – Any e.g. Business Reporting Unit
-- Total Variable – Target period total, numeric
-- Components Variable – Corresponding list of Total variable's components, numeric – nulls allowed
-- Amend Total – Select whether Total Variable for the target period should be automatically corrected, Boolean
-- Predictive Variable – Previous or current period total, numeric
-- Precision - The precision value determines the level of accuracy for our floating point calculations – Numeric – nulls allowed
-- Auxiliary Variable – optional, numeric – nulls allowed
-- Absolute Difference Threshold - represented as a decimal
-- Percentage Difference Threshold - represented as a decimal
-
-Note: 
-
-- Although Predictive Variable and Auxiliary Variable are both optional, one 
-of these will need to be provided for the method to run without stopping early.
-- In the same way, one of Absolute Difference Threshold and Percentage Difference 
-Threshold need to be provided.
-- Populating the parameters with zeros is not equivalent to leaving them blank.
-
-**Example**
-
-| identifier | total | comp_1 | comp_2 | comp_3 | comp_4 | amend_total | predictive | precision | auxiliary | absolute_difference_threshold | percentage_difference_threshold | 
-| --- | --- | ---  | --- | --- | --- | ---   | ---   | --- |--- | --- | --- | 
-| 1 | 1689  |  632 | 732 | 101 | 165 | False | 1689  |  10 |    |  28 | 0.1 |
-| 2 |    0  |    7 |   0 |   2 |   2 | True  |    0  |  28 |    |  11 |     |
-| 3 |   11  |    0 |   0 |   0 |   0 | False |   11  |  28 |    |  11 |     |
-| 4 | 10811 | 9201 | 866 | 632 | 112 | True  | 10811 |  28 |    |     | 0.1 |
-| 5 | 12492 | 9201 | 866 | 632 | 112 | True  | 12492 |  28 |    |     | 0.1 |
-
-### Method Output 
-
-Output records shall always contain the following fields with the following types:
-
-* Unique Identifier – Any e.g., Business Reporting Unit
-* Absolute Difference – Numeric, nulls allowed
-* Low Percent – Numeric, nulls allowed
-* High Percent – Numeric, nulls allowed
-* Final Total Variable – Numeric
-* Final Components Variable – Numeric
-* TCC Marker – To indicate the result of the Totals Components Correction method, string
-
-The TCC marker returned show if and what the method has corrected:
-
-* T = Total corrected
-* C = Components corrected
-* N = No correction required, i.e., the total is equal to the components sum
-* M = Manual editing required. This marker will identify contributors where the discrepancy between the total and component is deemed too large for automatic correction.
-* S = Method stops. This may be due to insufficient data to run the method, or one of the relevant zero cases has occurred.
-
-
-**Example**
-
-| identifier | absolute_difference | lower_percentage_threshold | upper_percentage_threshold | final_total | final_components | tcc_marker |
-| --- | --- | --- | ---     | ---   | ---                                                          | --- |
-| 1 | 59 | 1467   |  1793   | 1689  | ['654.8760735' ,'758.4957055', '104.6558282', '170.9723927'] |   C | 
-| 2 | 11 |        |         | 11    | ['7', '0', '2', '2']                                         |   T | 
-| 3 |    |        |         | 11    | ['0', '0', '0', '0']                                         |   S | 
-| 4 |    | 9729.9 | 11892.1 | 10811 | ['9201', '866', '632', '112']                                |   N | 
-| 5 |    | 9729.9 | 11892.1 | 12492 | ['9201', '866', '632', '112']                                |   M | 
-
-### Example (Synthetic) Data
-
-Files containing the example input & output data given above can be found in the [ExampleData](ExampleData) folder where you are reading this guide.
-
-Input data:
-
-```  totals_and_components_input_data_example.csv  ```
-
-Expected output after running the worked example:
-
-```  totals_and_components_output_data_example.csv  ```
-
-## Worked Example
-
-The method can be used in two ways:
-1. a single record can be specified as the input parameters to the method
-2. mutiple records can be supplied as a pandas dataframe to a wrapper function
-
-
-The following code can be used to run totals & components on a single record. 
-This example uses the first record in the example dataset.
-
-```py
-from sml_small.editing import totals_and_components
-
-result = totals_and_components(
-    identifier="1",
-    total=1689,
-    components=
-    [
-        (632),
-        (732),
-        (101),
-        (165)
-    ],
-    amend_total=False,
-    predictive=1689,
-    precision=10,
-    auxiliary=None,
-    absolute_difference_threshold=28,
-    percentage_difference_threshold=0.1
-)
-
-# The output will be returned as an object.
-# You will need to destructure the object to extract the values and
-# one way of doing this is using the built-in function vars().
-# vars() is used to return the __dict__attribute for the specified
-# module, class, instance or any other object with a
-# __dict__attribute
-
-print(vars(result))
-```
-
-Alternatively, a wrapper function is supplied with the method to run 
-totals & components for all records in a pandas dataframe.
-
-```py
-import pandas as pd
-from sml_small.utils.pandas_wrapper import wrapper
-
-datafile = "totals_and_components_input_data_example.csv"
-df = pd.read_csv(datafile)
-
-# Specify all columns to be appended to output dataframe
-totals_and_components_output_columns = [
-    "abs_diff",
-    "perc_low",
-    "perc_high",
-    "final_total",
-    "final_components",
-    "tcc_marker"    
-    ]
-
-totals_and_components_output = wrapper(
-    input_frame = df,
-    method = "totals_and_components",
-    output_columns = totals_and_components_output_columns,
-    unique_identifier_column = "identifier",
-    total_column = "total",
-    components_list_columns = ["comp_1","comp_2","comp_3","comp_4"], 
-    amend_total_column = "amend_total",
-    predictive_column = "predictive",
-    precision = "precision",
-    auxiliary_column = "auxiliary",
-    absolute_threshold_column = "absolute_difference_threshold",
-    percentage_threshold_column = "percentage_difference_threshold"
-    )
-
-# Save the output dataframe to a csv file
-totals_and_components_output.to_csv(
-    "totals_and_components_output_data_example.csv",index=False)
-```
-
-### Additional Information
+# Additional Information
 
 The ONS Statistical Methods Library at https://statisticalmethodslibrary.ons.gov.uk/ 
 contains:
