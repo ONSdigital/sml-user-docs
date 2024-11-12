@@ -291,7 +291,7 @@ E12: A required record for calculating midpoint date is missing from the trading
 E13: A required record for setting APS and APE by midpoint is missing from or duplicated in the trading weights table.
 E14: Expected period start date is missing or an invalid date.
 E15: Expected period end date is missing or an invalid date.
-These are NOT exceptions and do not cause the method to fail. Once an error flag has been placed on a row of data, no further processing is done to that row, preserving the data in the state it was when the flag was raised. The method will continue processing even when errors occur, this was done for historical reasons, unlike other methods in the Statistical Methods Library.
+These are NOT exceptions and do not cause the method to fail. Once an error flag has been placed on a row of data, no further processing is done to that row, preserving the data in the state it was when the flag was raised. The method will continue processing even when errors occur, this was done for historical reasons.
 
 **Set to Mid-point – set as Y or YT or N**
 A mid-point method can be used in Date Adjustment to check whether a contributor’s returned dates are within the expected period. If the mid-point of the contributor’s returned start and end dates are outside the expected period, then a “C” flag is raised in the error flag column to inform the user that the contributor’s response data aligns with a different reporting period (i.e., not the expected period). If the respondent’s mid-point does lie outside of the period, the user is interested in then date adjustment will not occur.
