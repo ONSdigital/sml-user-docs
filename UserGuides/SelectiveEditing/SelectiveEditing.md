@@ -1,7 +1,5 @@
 # SML User Guide - Selective Editing in Python
 
-# Method Description
-
 ### Overview
 
  | Descriptive      | Details                                                  |
