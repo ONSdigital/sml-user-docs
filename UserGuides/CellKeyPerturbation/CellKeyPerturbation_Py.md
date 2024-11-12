@@ -1,7 +1,5 @@
 # SML User Guide - Cell Key Perturbation in Python
 
-# Method Description
-
 ### Overview
 
  | Descriptive      | Details                         |
@@ -30,86 +28,7 @@ a real person, or is caused by the perturbation.
 Cell Key Perturbation is consistent and repeatable, so the same cells are 
 always perturbed in the same way.
 
-
-### Terminology
-
-- Microdata - data at the level of individual respondents
-- Record key - A random number assigned to each record 
-- Cell value - The number of records or frequency for a cell
-- Cell key - The sum of record keys for a given cell
-- pvalue - perturbation value. The value of noise added to cells, e.g. +1, -1
-- pcv - perturbation cell value. This is an amended cell value needed to merge 
-on the ptable
-- ptable - perturbation table. The look-up file containing the pvalues, this 
-determines which cells get perturbed and by how much.
-
-
-### Statistical Process Flow / Formal Definition
-
-The user is required to supply microdata and to specify which columns in the
-data they want to tabulate by. They must also supply a ptable which will 
-determine which cells get perturbed and by how much.
-
-The microdata needs to contain a column for 'record key'. Record keys are 
-random, uniformly distributed integers within the chosen range. Previously, 
-record keys between 0-255 have been used (as for census-2021). The method has 
-been extended to also handle record keys in the range 0-4096 for the purpose of 
-processing administrative data. 
-
-It is expected that users will tabulate 1-4 variables for a particular geography 
-level e.g. tabulate age by sex at local authority level. 
-
-The create_perturbed_table function counts how many rows in the data
-contain each combination of categories e.g. how many respondents are of
-each age category in each local authority area. The sum of the record
-keys for each record in each cell is also calculated. Modulo 256 or 4096
-of the sum is taken so this 'cell key' is within range. The table now has 
-perturbation cell values (pcv) and cell keys (ckey).
-
-The ptable is merged with the data, matching on 'pcv' and 'ckey'. The merge 
-provides a 'pvalue' for each cell. The post perturbation count ('count' column) 
-is the pre-perturbation count ('rs_cv'), plus the perturbation value
-('pvalue'). After this step, the counts have had the required perturbation 
-applied. The output is the frequency table with the post-perturbation 'count' 
-column. The result is that counts have been deliberately changed based on the 
-ptable, for the purpose of disclosure protection.
-
-To limit the size of the ptable, only 750 rows are used, and rows
-501-750 are used repeatedly for larger cell values. E.g. instead of
-containing 100,001 rows, when the cell value is 100,001 the 501st row
-is used. Rows 501-750 will be used for cell values of 501-750, as well
-as 751-1000, 1001-1250, 1251-1500 and so on. To achieve this effect an
-alternative cell value column (pcv) is calculated which will be between 0-750.
-For cell values 0-750 the pcv will be the same as the cell value. For
-cell values above 750, the values are transformed by -1, modulo 250,
-+501. This achieves the looping effect so that cell values 751, 1001,
-1251 and so on will have a pcv of 501.
-
-After cell key perturbation is applied, a threshold is applied so that any 
-counts below the threshold will be suppressed (set to missing). The user can 
-specify the value for the threshold, but if they do not, the default value of 
-10 will be applied. Setting the threshold to zero would mean no suppression is 
-applied.
-
-As well as specifying the level of perturbation, the ptable can also be used 
-to apply rounding, and a threshold for small counts. The example ptable 
-supplied with this method, ptable_10_5, applies the 10_5 rule (supressing 
-values less than 10 and rounding others to the nearest 5) for record keys 
-in the range 0-255.
-
-### Assumptions & Vailidity
-
-The microdata must contain one column per variable, which are expected to be 
-categorical (they can be numeric but categorical is more suitable for 
-frequency tables). 
-
-Record keys should already be attached to the data, and the range of record 
-keys in the ptable should match that in the data, 0-255 or 0-4095.
-
-Cell Key Perturbation is consistent and repeatable, so the same cells are 
-always perturbed in the same way. The record keys need to be unchanged, 
-changing the record keys would create inconsistent results and provide 
-much less protection. 
+Full details of the methodology and statistical process flow are given in the [Methodology](#methodology) section.
 
 
 # User Notes
@@ -151,7 +70,8 @@ The microdata must contain one column per variable, which are expected to be
 categorical (they can be numeric but categorical is more suitable for 
 frequency tables). 
 
-The 'record key' column in the microdata will be an interger, randomly 
+Record keys should already be attached to the data. The 'record key' column 
+in the microdata will be an interger, randomly 
 uniformly distributed either in the range 0-255 or 0-4095. 
 
 A ptable file needs to be supplied which determines which cells are perturbed 
@@ -343,10 +263,89 @@ The ckey, pcv, pre_sdc_count and pvalue columns should be dropped before the
 contingency table is published.
 
 
-### Additional Information
+# Methodology
 
-The ONS Statistical Methods Library at https://statisticalmethodslibrary.ons.gov.uk/ 
-contains:
+### Terminology
+
+- Microdata - data at the level of individual respondents
+- Record key - A random number assigned to each record 
+- Cell value - The number of records or frequency for a cell
+- Cell key - The sum of record keys for a given cell
+- pvalue - perturbation value. The value of noise added to cells, e.g. +1, -1
+- pcv - perturbation cell value. This is an amended cell value needed to merge on the ptable
+- ptable - perturbation table. The look-up file containing the pvalues, this determines which cells get perturbed and by how much.
+
+
+### Statistical Process Flow / Formal Definition
+
+The user is required to supply microdata and to specify which columns in the
+data they want to tabulate by. They must also supply a ptable which will 
+determine which cells get perturbed and by how much.
+
+The microdata needs to contain a column for 'record key'. Record keys are 
+random, uniformly distributed integers within the chosen range. Previously, 
+record keys between 0-255 have been used (as for census-2021). The method has 
+been extended to also handle record keys in the range 0-4096 for the purpose of 
+processing administrative data. 
+
+It is expected that users will tabulate 1-4 variables for a particular geography 
+level e.g. tabulate age by sex at local authority level. 
+
+The create_perturbed_table function counts how many rows in the data
+contain each combination of categories e.g. how many respondents are of
+each age category in each local authority area. The sum of the record
+keys for each record in each cell is also calculated. Modulo 256 or 4096
+of the sum is taken so this 'cell key' is within range. The table now has 
+perturbation cell values (pcv) and cell keys (ckey).
+
+The ptable is merged with the data, matching on 'pcv' and 'ckey'. The merge 
+provides a 'pvalue' for each cell. The post perturbation count ('count' column) 
+is the pre-perturbation count ('rs_cv'), plus the perturbation value
+('pvalue'). After this step, the counts have had the required perturbation 
+applied. The output is the frequency table with the post-perturbation 'count' 
+column. The result is that counts have been deliberately changed based on the 
+ptable, for the purpose of disclosure protection.
+
+To limit the size of the ptable, only 750 rows are used, and rows
+501-750 are used repeatedly for larger cell values. E.g. instead of
+containing 100,001 rows, when the cell value is 100,001 the 501st row
+is used. Rows 501-750 will be used for cell values of 501-750, as well
+as 751-1000, 1001-1250, 1251-1500 and so on. To achieve this effect an
+alternative cell value column (pcv) is calculated which will be between 0-750.
+For cell values 0-750 the pcv will be the same as the cell value. For
+cell values above 750, the values are transformed by -1, modulo 250,
++501. This achieves the looping effect so that cell values 751, 1001,
+1251 and so on will have a pcv of 501.
+
+After cell key perturbation is applied, a threshold is applied so that any 
+counts below the threshold will be suppressed (set to missing). The user can 
+specify the value for the threshold, but if they do not, the default value of 
+10 will be applied. Setting the threshold to zero would mean no suppression is 
+applied.
+
+As well as specifying the level of perturbation, the ptable can also be used 
+to apply rounding, and a threshold for small counts. The example ptable 
+supplied with this method, ptable_10_5, applies the 10_5 rule (supressing 
+values less than 10 and rounding others to the nearest 5) for record keys 
+in the range 0-255.
+
+### Assumptions & Vailidity
+
+The microdata must contain one column per variable, which are expected to be 
+categorical (they can be numeric but categorical is more suitable for 
+frequency tables). 
+
+Record keys should already be attached to the data, and the range of record 
+keys in the ptable should match that in the data, 0-255 or 0-4095.
+
+Cell Key Perturbation is consistent and repeatable, so the same cells are 
+always perturbed in the same way. The record keys need to be unchanged, 
+changing the record keys would create inconsistent results and provide 
+much less protection. 
+
+# Additional Information
+
+The ONS Statistical Methods Library at https://statisticalmethodslibrary.ons.gov.uk/ contains:
 -	Further information about the methods including a link to the GitHub 
 repository which contains detailed API information as part of the method code.
 -	Information about other methods available through the library.
