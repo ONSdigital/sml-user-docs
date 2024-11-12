@@ -55,7 +55,7 @@ from cell_key_perturbation.create_perturbed_table import create_perturbed_table
 
 ### Requirements and Dependencies 
 
-- This method requires microdata and a ptable file. 
+- This method requires microdata and a perturbation table (ptable) file. 
 - The microdata and the ptable each need to be supplied as a pandas dataframe.
 - The microdata must include a record key variable for cell key perturbation 
 to be applied.
