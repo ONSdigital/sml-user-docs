@@ -19,7 +19,7 @@ To generate summary and headline statistics for a reporting period it is importa
 Full details of the methodology and statistical process flow are given in the [Methodology](#methodology) section.
 
 
-# User Guidance
+# User Notes
 
 ### Finding and Installing the method 
 
