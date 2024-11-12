@@ -1,11 +1,4 @@
-[comment]: # (File naming convention: SML_UserDocs_<MethodName>_<Lang>.md )
-[comment]: # (If more than 1 language, Lang abbreviates to: Py / PySpk / R )
-
-
 # SML User Guide - (Method Name) in (Python/R/PySpark) 
-
-# Method Description
-
 
 ### Overview
 
@@ -30,45 +23,13 @@ This section should include, where relevant:
 - Cautions (e.g. distributions of weights should lie within X range) 
 - Present concisely all suitable alternative methods (e.g. trimming) or provide links to these methods, if relevant specifications exist in SML. 
 
-
-### Terminology
-
-This section should contain any terminology specific to this method which it would be useful to define at this stage – this should be statistical terminology, there is a section in the technical user notes to explain implementation-specific terminology.  
-
-
-### Statistical Process Flow / Formal Definition
-
-This section should: 
-
-- Provide a formal definition of the method (e.g. mathematical notation, formulas used). 
-- Describe the logic of the method step-by-step. Depending on circumstances and complexity this could be text only or a flow chart, etc. 
-
-### Assumptions & Vailidity
-
-- List the statistical assumptions upon which the method is based. (e.g. Normality of data) 
-- Explain whether the method is still valid if an assumption is violated (if the method is not valid what are the options to overcome this e.g. could a transformation be applied, can violating records be deleted) 
-
-### Worked Example (optional) 
-
-Provide a simple worked through example of the method. This should focus on the mathematics of the method more-so than the code – a work-through of the technical implementation of the method should be included in the user notes. 
-
-
-### Issues for Consideration (optional) 
-
-Detail any relevant considerations to be aware of that haven’t been covered in the rest of the specification. 
-
-
-### References (optional) 
-
-This section should contain the list of references used in the specification. These should be publicly available resources accessible outside of ONS. This allows anyone reading the specification to read the reference material. 
-
-
+Full details of the methodology and statistical process flow are given in the [Methodology](#methodology) section.
 
 # User Notes
 
 ### Finding and Installing the method (written by SML Team)
 
-This method requires (Python / R) version (n.n.n) and uses the (...) package(s).
+**This method requires (Python / R) version (n.n.n) and uses the (...) package(s).**
 
 </sub> (If method requires older Python/R and/or packages): To prevent downgrading software on your system, we recommend creating a virtual environment to install and run SML methods. This will enable you to install the method with the required version of Python, etc, without disrupting the newer versions you may be running on your system.  
 If you’re new to virtual environments, feel free to use this guide (link to Python or R portal guidance as appropriate) to get started. Otherwise, use your preferred method to create a virtual environment with the correct software versions.</sub>
@@ -158,11 +119,23 @@ are context dependent so will vary between specifications.
 
 ### Example (Synthetic) Data
 
-This section should contain links to synthetic input and output data.
+This section should contain links to synthetic input and output data, for example:
+
+Files containing the example input & output data given above can be found in the [ExampleData](ExampleData) folder where you are reading this guide.
+
+Input data:
+
+```  input.csv  ```
+
+Expected output after running the worked example:
+
+```  output.csv  ```
 
 ## Worked Example
 
 Provide a simple worked through example of the method. 
+```py
+```
 
 ### Treatment of Special Cases 
 
@@ -182,9 +155,35 @@ This section should describe the metadata that is produced by the method. This c
 - Selective editing - Business level data showing every iteration of selective editing score that was calculated for each contributor in a given period or a dataset containing all versions of returned and adjusted data values for a given reference at that current point in time 
 - History of the type of imputation for a given business (e.g. forward, backward, construction) 
 
+# Methodology
+
+### Terminology
+
+This section should contain any terminology specific to this method which it would be useful to define at this stage – this should be statistical terminology, there is a section in the technical user notes to explain implementation-specific terminology.  
+
+### Statistical Process Flow / Formal Definition
+
+This section should: 
+
+- Provide a formal definition of the method (e.g. mathematical notation, formulas used). 
+- Describe the logic of the method step-by-step. Depending on circumstances and complexity this could be text only or a flow chart, etc. 
+
+### Assumptions & Vailidity
+
+- List the statistical assumptions upon which the method is based. (e.g. Normality of data) 
+- Explain whether the method is still valid if an assumption is violated (if the method is not valid what are the options to overcome this e.g. could a transformation be applied, can violating records be deleted) 
+
+### Worked Example (optional) 
+
+Provide a simple worked through example of the method. This should focus on the mathematics of the method more-so than the code – a work-through of the technical implementation of the method should be included in the user notes. 
+
 ### Issues for Consideration (optional) 
 
 Detail any relevant considerations to be aware of that haven’t been covered in the rest of the specification. 
+
+### References (optional) 
+
+This section should contain the list of references used in the specification. These should be publicly available resources accessible outside of ONS. This allows anyone reading the specification to read the reference material. 
 
 ### Appendix (optional) 
 
@@ -193,13 +192,12 @@ This section should include:
 - Details not covered in the “Background” section. 
 - The variable description tables discussed in the sections “Input Data” and “Output Data” 
 
-### Additional Information
+# Additional Information
 
 The ONS Statistical Methods Library at https://statisticalmethodslibrary.ons.gov.uk/ 
 contains:
 -	Further information about the methods including a link to the GitHub repository which contains detailed API information as part of the method code.
 -	Information about other methods available through the library.
-
 
 ### License
 
