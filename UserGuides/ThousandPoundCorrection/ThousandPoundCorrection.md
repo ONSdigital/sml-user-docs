@@ -121,9 +121,6 @@ Expected output (single record example):
 
 ```  thousand_pounds_example_output.csv  ```
 
-File containing the example input data to apply the pandas wrapper (second worked example, below) can be found in the github repo
-https://github.com/ONSdigital/sml-python-small/blob/main/tests/editing/thousand_pounds/example_data/example_test_data.csv
-
 Input data (pandas wrapper example):
 
 ``` example_test_data.csv ```
