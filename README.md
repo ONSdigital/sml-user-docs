@@ -1,5 +1,5 @@
 # SML User Documentation
-<img align="right" width="200" height="200" src="https://github.com/user-attachments/assets/a84c0ae9-5c23-4371-b647-f8cd3af1ff25">
+<img align="right" width="150" height="200" src="https://github.com/user-attachments/assets/0a3b4ec7-f0a1-4709-9371-fac3dc60e71d">
 
 Welcome to the Statistical Methods Library user documentation repository.
 
@@ -8,7 +8,7 @@ Here you will find user guides outlining the methodology behind each of our meth
 ### Sml-small methods
 - [Date Adjustment](UserGuides/DateAdjustment/DateAdjustment.md)
 - [Selective Editing](UserGuides/SelectiveEditing/SelectiveEditing.md)
-- [Thousand Pound Correction]()
+- [Thousand Pound Correction](UserGuides/ThousandPoundCorrection/ThousandPoundCorrection.md)
 - [Totals and Components](UserGuides/TotalsAndComponents/TotalsAndComponents.md)
 
 ### Cell Key Perturbation
