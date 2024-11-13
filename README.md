@@ -1,5 +1,5 @@
 # SML User Documentation
-<img align="right" width="150" height="200" src="https://github.com/user-attachments/assets/0a3b4ec7-f0a1-4709-9371-fac3dc60e71d">
+<img align="right" width="150" height="150" src="https://github.com/user-attachments/assets/5967968f-bc6e-4b47-9c87-72dd54c1defc">
 
 Welcome to the Statistical Methods Library user documentation repository.
 
