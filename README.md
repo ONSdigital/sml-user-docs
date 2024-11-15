@@ -4,7 +4,7 @@
 
 Welcome to the Statistical Methods Library user documentation repository.
 
-Here you will find user guides outlining the methodology behind each of our methods as well as instructions on how to install and use them.
+Here you will find user guides explaining how to install and use our methods as well as the methodology behind them.
 
 ### Sml-small methods
 - [Date Adjustment](UserGuides/DateAdjustment/DateAdjustment.md)
