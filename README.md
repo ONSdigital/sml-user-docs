@@ -18,6 +18,6 @@ Here you will find user guides explaining how to install and use our methods as 
 
 
 ## License
-Unless stated otherwise, the SML codebase is released under the MIT License. This covers both the codebase and any sample code in the documentation.
+Unless stated otherwise, the SML codebase is released under the [MIT License](https://github.com/ONSdigital/sml-user-docs/blob/main/LICENSE). This covers both the codebase and any sample code in the documentation.
 
-The documentation is available under the terms of the [Open Government 3.0 license](https://github.com/ONSdigital/sml-user-docs/blob/main/LICENSE).
+The documentation is available under the terms of the [Open Government 3.0 license](https://github.com/ONSdigital/sml-user-docs/blob/main/Open%20Government%20License%20v3.0).
