@@ -16,3 +16,8 @@ Here you will find user guides explaining how to install and use our methods as 
 - [CellKeyPerturbation in Python](UserGuides/CellKeyPerturbation/CellKeyPerturbation_Py.md)
 - CellKeyPerturbation in R (to be released shortly)
 
+
+## License
+Unless stated otherwise, the SML codebase is released under the MIT License. This covers both the codebase and any sample code in the documentation.
+
+The documentation is available under the terms of the [Open Government 3.0 license](https://github.com/ONSdigital/sml-user-docs/blob/main/LICENSE).
