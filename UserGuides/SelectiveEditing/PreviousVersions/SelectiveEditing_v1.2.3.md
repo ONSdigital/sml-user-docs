@@ -1,0 +1,291 @@
+# SML User Guide - Selective Editing in Python
+
+### Overview
+
+ | Descriptive      | Details                                                  |
+ |:---              | :----                                                    |
+ | Support Area     | Methodology - Editing & Imputation                       | 
+ | Method Theme     | Editing                                                  |
+ | Status           | Ready to Use                                             |
+ | Inputs           | Reference, question list, adjusted return, predicted value, auxillary predicted value, standardising factor, design weight, threshold |
+ | Outputs          | Reference, Score1, ScoreM, Final_Score, Selective Editing Marker, Predicted Marker |
+ | Method Version   | 1.2.3                                           |
+
+### Summary
+
+Selective Editing is an internationally recognised editing method where potential errors are prioritised according to their expected impact on key outputs. 
+Selective Editing assigns a score to specified variables where the score reflects the impact that editing the respondent will have on the estimates. 
+Contributors with a score above a predetermined threshold are flagged for manual review to be validated, while contributors with a score below the threshold pass through unchecked.
+
+Full details of the methodology and statistical process flow are given in the [Methodology](#methodology) section.
+
+# User Notes
+
+### Finding and Installing the method 
+
+**This method requires Python >=3.7.1, <4.0.0 and uses the Pandas package >=1.3.5, <=v1.5.3.**
+
+If you are using Pandas >=2.0 this will be uninstalled and v1.5.3 installed.
+
+><sub>To prevent downgrading software on your system, we recommend creating a virtual environment to install and run SML methods. This will enable you to install the method with the required version of Python, etc, without disrupting the newer versions you may be running on your system. If you’re new to virtual environments, please see our guidence on installing a method in the Help centre of our SML website to get started. Otherwise, use your preferred method to create a virtual environment with the correct software versions.</sub>
+
+
+The method package can be installed from Artifactory/PyPI using the following code in the terminal or command prompt:
+
+```py
+pip install sml_small 
+```
+
+In your code you can import the method using:
+
+```py
+import sml_small.selective_editing as seled
+```
+
+### Requirements and Dependencies 
+
+This method requires input data supplied as a Pandas dataframe.  
+
+
+### Assumptions and Validity 
+
+- The method will automatically assign adjusted return (ar), predicted value (pv), auxiliary predicted
+value (apv) and standardising factor (sf) based on the column names of the inputs. 
+- Unless otherwise noted, fields must not contain Null values. 
+- If the "weighted mean score" is selected to combine score, then the
+  sum of the weights provided should total to 1.
+
+## How to Use the Method
+
+Once the selective editing method is available on your computer you will be
+able to call the method and perform selective editing on a dataset. 
+
+The input dataset will need to contain a specific suffix structure for each question used in
+calculating the score. The adjusted return value will have '_ar', the
+predicted value will have '_pv', the auxiliary predicted value will
+have '_apv', the standardising factor will have '_sf' and the weight
+(if weighted scores are chosen) will have '_wt', where the sum of '_wt'
+has to add up to 1.
+
+### Method Input
+
+Input records must include the following fields of the
+correct types:
+
+- reference (any type): Unique to each respondent. 
+- design_weight (numeric): Also known as the a-weight. 
+- threshold (numeric): The selective editing threshold. This is unique for
+each domain and is specified by Methodology. 
+- question_1_ar (numeric): This is the adjusted return for question 1. The adjusted
+return has usually been through other editing strategies before Selective
+Editing. 
+- question_1_pv (numeric): This is the predicted value for question 1, usually the
+respondent's value from the previous period. 
+- question_1_apv (numeric): This is the auxiliary predicted variable used when
+there is not a previous period value available. 
+- question_1_sf (numeric): This is the standardising factor, which is the weighted
+domain estimate for the previous period. 
+- question_1_wt (numeric): This column is a weight column, which is used when the
+weighted option is used as the combination method. 
+
+
+**Example**
+
+ | Reference | design_weight | threshold | question_1_ar | question_1_pv | question_1_apv | question_1_sf | question_1_wt |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 49900001 | 20 | 0.6 | 800 | | 424 | 800000 | 1 |
+| 49900002 | 20 | 0.6 | 656 | 390 | 259 | 800000 | 1 |
+| 49900003 | 20 | 0.6 | 997 | 773 | 912 | 800000 | 1 |
+| 49900004 | 20 | 0.6 | 676 |  | 334 | 800000 | 1 |
+| 49900005 | 20 | 0.6 | 632 | 871 | 684 | 800000 | 1 |
+| 49900006 | 20 | 0.6 | 985 | 345 | 312 | 800000 | 1 |
+| 49900007 | 20 | 0.6 | 468 | 963 | 773 | 800000 | 1 |
+| 49900008 | 20 | 0.6 | 772 | 733 | 833 | 800000 | 1 |
+| 49900009 | 20 | 0.6 | 621 | 673 | 898 | 800000 | 1 |
+| 49900010 | 20 | 0.6 | 736 | 377 | 646 | 800000 | 1 |
+   
+
+### Method Output 
+
+Output records will contain the following new fields:
+
+
+- question_1_s: This is the score for question 1. 
+- question_1_pm: This is a predicted marker, which indicates whether the predicted value (True) or 
+  the auxiliary value (False) has been used.
+- Final_score: The score after a combination method is applied to multiple variables (if used). This
+  is the value that is compared to the threshold.
+- Selective_edting_marker: If the respondent needs to be contacted for validation, the marker will be False (i.e., the score
+  is >= the threshold value). If the respondent does not need to be contacted, the marker will be True. 
+
+
+
+**Example**
+
+| Reference | design_weight | threshold | question_1_ar | question_1_pv | question_1_apv | question_1_sf | question_1_s | question_1_pm | final_score | selective_editing_marker
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 49900001 | 20 | 0.6 | 800 | | 424 | 800000 | 0.94 | FALSE | 0.94 | FALSE |
+| 49900002 | 20 | 0.6 | 656 | 390 | 259 | 800000 | 0.665 | TRUE | 0.665 | FALSE |
+| 49900003 | 20 | 0.6 | 997 | 773 | 912 | 800000 | 0.56 | TRUE | 0.56 | TRUE |
+| 49900004 | 20 | 0.6 | 676 |  | 334 | 800000 | 0.855 | FALSE | 0.855 | FALSE |
+| 49900005 | 20 | 0.6 | 632 | 871 | 684 | 800000 | 0.5975 | TRUE | 0.5975 | TRUE |
+| 49900006 | 20 | 0.6 | 985 | 345 | 312 | 800000 | 1.6 | TRUE | 1.6 | FALSE |
+| 49900007 | 20 | 0.6 | 468 | 963 | 773 | 800000 | 1.2375 | TRUE | 1.2375 | FALSE |
+| 49900008 | 20 | 0.6 | 772 | 733 | 833 | 800000 | 0.0975 | TRUE | 0.0975 | TRUE |
+| 49900009 | 20 | 0.6 | 621 | 673 | 898 | 800000 | 0.13 | TRUE | 0.13 | TRUE |
+| 49900010 | 20 | 0.6 | 736 | 377 | 646 | 800000 | 0.8975 | TRUE | 0.8975 | FALSE |
+
+
+
+Note that in this example, References 49900001 and 49900004 do not have predicted values available for the
+score calculation. You can see the blank cells for the predicted values and question_1_pm is False.  This shows that the auxillary value is used for these respondents. The rest of the respondents have the predicted value
+available and therefore, question_1_pm is True.
+
+### Example (Synthetic) Data
+
+Files containing the example input and output data given above can be found in the [ExampleData](ExampleData) folder where you are reading this guide.
+
+Input data:
+
+    selective_editing_input_data_example_1.csv
+    
+Expected output after running the worked example:
+
+    selective_editing_output_data_example_1.csv
+
+
+## Worked Example
+
+
+```py
+import pandas as pd
+import sml_small.selective_editing as seled
+
+# Location of csv file
+datafile = "selective_editing_input_data_example_1.csv"
+
+# Read in csv file above
+df = pd.read_csv(datafile)
+
+# Call the Selective Editing method
+output = seled.selective_editing(input_dataframe = df, # DataFrame of the test data (above)
+                                 reference_col = 'reference', # Reference column
+                                 design_weight_col = 'design_weight', # Design weight column
+                                 threshold_col = 'threshold', # Threshold column
+                                 question_list = ['question_1'], # Question(s) we are performing Selective Editing on
+                                 combination_method = 'maximum', # Type combination, will accept 'maximum', 'mean', 'weighted', 'minkowski', default = maximum
+                                 minkowski_distance = 0, # Set to 0 if minkowski is not selected. Set to value of p if minkowski is selected above. 
+                                 show_sums = 0) # Provides additional data on score calculations
+                                 
+output.to_csv("selective_editing_output_data_example_1.csv")
+```
+
+The output gets exported as a .csv file, which will be saved in your working directory.
+
+### Treatment of Special Cases 
+
+- Fields should not contain Null values
+
+# Methodology
+
+### Terminology
+
+- Contributor reference - Unique identifier assigned to each respondent.
+- Adjusted return - The most recent unedited returned data
+  value (for a given variable) in the current period, t.
+- Predicted value - The first predictor value (for a given
+  variable) for the current period adjusted return.
+- Auxiliary predicted value - This is the secondary
+  predictor (for a given variable) for the current
+  period adjusted return.
+- Standardising factor - The domain group estimate used to
+  standardise scores within a given domain group.
+- Design weight - An a-weight, generated by another
+  method.
+- Selective Editing domain group - Indicates which Selective
+  Editing domain group a given respondent belongs to.
+- Selective Editing threshold - Unique threshold for each domain group 
+  against which the selected editing score is compared.  
+- Combining function - If the method is applied to more than
+  one variable, then the scores can be combined in the
+  following ways: Average, Sum, Max, Weighted mean, Minkowski.
+
+### Statistical Process Flow / Formal Definition
+
+A selective editing score is calculated for each reporting unit i in
+time t. The selective editing score is calculated by multiplying the
+design weight by the modulus of the adjusted return for reporting unit
+i at time t by the predicted value for reporting unit i at time t,
+divided by the standardising factor, and all multiplied by 100 as shown
+by the equation below.
+
+```asciimath
+Score = 100*{{a-weight*|current value-predicted value|}/Standardising factor}
+```
+
+The predicted value is a clean response (i.e. free from
+error adjusted return) for reporting unit i at time t-1. However, if
+a clean response for reporting unit i at time t-1 is not available
+then imputed or constructed previous period data is used. If this
+value isn't available, then the auxiliary predicted value for reporting
+unit i at time t is used.
+
+The standardising factor is the weighted domain estimate for a given
+variable at time t-1, which is used to determine a
+respondent's potential impact on key output estimates.
+
+**Combining Scores**
+
+If selective editing is applied to more than one variable, then a final score is calculated using
+one of the following combination methods:
+
+* Maximum score: The maximum score of all the variables.
+* Weighted mean score: Where each score is multiplied by a weight, where
+  all weights will add up to 1.
+* Mean score: Where all scores are added up and divided by the number of
+  scores.
+* Minkowski distance: Each variable's score is multiplied to the power of p. All the scores are then summed and multiplied to the
+ power of 1/p, where p >= 1 and is an integer. 
+  
+**Generate selective editing marker**
+
+Each final score is compared to the threshold associated with
+the respondent's domain group.
+
+If the final score is greater than or equal to the selective editing
+threshold, then the selective editing marker for the reporting
+unit is marked False and the respondent requires
+validation.
+
+If the final score is less than the selective editing threshold, the selective editing marker for 
+the reporting unit is marked True and the respondent does not require validation.
+
+
+### Assumptions & Vailidity
+
+- All data inputs required by the method are available and are on a
+  standardised basis.
+- The predicted variable and auxiliary predicted value should both
+  be good predictors of the returned data for time t.
+- The predicted value in the score calculation must have been cleaned
+  and free from errors. This is not limited to genuine returns, and
+  it may be an imputed or constructed value if a clean response is
+  not available.
+- Each respondent is clearly classified into one mutually exclusive
+  domain group.
+- The thresholds specified are valid and appropriate (>0)
+
+
+# Additional Information
+
+The ONS Statistical Methods Library at https://statisticalmethodslibrary.ons.gov.uk/ 
+contains:
+- Further information about the methods including a link to the GitHub repository which contains detailed API information as part of the method code.
+- Information about other methods available through the library.
+
+
+### License
+
+Unless stated otherwise, the SML codebase is released under the MIT License. This covers both the codebase and any sample code in the documentation.
+
+The documentation is available under the terms of the Open Government 3.0 license.
