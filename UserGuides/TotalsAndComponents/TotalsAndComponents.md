@@ -9,7 +9,7 @@
  | Status           | Ready to Use                                             |
  | Inputs           | identifier, total, components, amend_total, predictive, precision, auxiliary, absolute_difference_threshold, percentage_difference_threshold |
  | Outputs          | object containing results |
- | Method Version   | v1.2.3                                                   |
+ | Method Version   | v1.2.5                                                   |
 
 ### Summary
 
