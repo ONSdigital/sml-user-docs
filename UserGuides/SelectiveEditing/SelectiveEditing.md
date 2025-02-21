@@ -9,7 +9,7 @@
  | Status           | Ready to Use                                             |
  | Inputs           | Reference, question list, adjusted return, predicted value, auxillary predicted value, standardising factor, design weight, threshold |
  | Outputs          | Reference, Score1, ScoreM, Final_Score, Selective Editing Marker, Predicted Marker |
- | Method Version   | 1.2.3                                           |
+ | Method Version   | 1.2.5                                           |
 
 ### Summary
 
