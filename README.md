@@ -2,7 +2,7 @@
 
 <img align="right" width="170" height="170" src="assets/SML_logo.png">
 
-Welcome to the Statistical Methods Library user documentation repository.
+Welcome to the Statistical Methods Library (SML) user documentation repository.
 
 Here you will find user guides explaining how to install and use our methods and the methodology behind them, as well as example data to test running the methods.
 
