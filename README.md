@@ -2,6 +2,11 @@
 
 <img align="right" width="170" height="170" src="assets/SML_logo.png">
 
+> [!CAUTION]  
+> This repository has been archived. 
+> Our current User Guides and example data can be found [here](https://onsdigital.github.io/sml-public/intro.html).
+
+
 Welcome to the Statistical Methods Library (SML) user documentation repository.
 
 Here you will find user guides explaining how to install and use our methods and the methodology behind them, as well as example data to test running the methods.
